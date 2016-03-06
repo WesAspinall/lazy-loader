@@ -13,6 +13,7 @@ var promise = _jquery2['default'].getJSON(url);
 
 //returns a promise
 promise.then(function (data) {
+  console.log('success');
   var news = data.news;
 
   //cache results
@@ -29,20 +30,33 @@ promise.then(function (data) {
     titleCache.push(titleTemplate);
     publishCache.push(publishedTemplate);
   }
-  //insert initial HTML content
-  (0, _jquery2['default'])('.app').append(titleCache);
-  (0, _jquery2['default'])('.app').append(publishCache);
-});
 
-function endHandler() {
-  (0, _jquery2['default'])('.app').bind('scroll', function () {
-    if ((0, _jquery2['default'])(this).scrollTop() + (0, _jquery2['default'])(this).innerHeight() >= (0, _jquery2['default'])(this)[0].scrollHeight) {
-      console.log('end reached');
+  console.log(titleCache.length);
+
+  function scrollHandler() {
+    for (var i = 0; i < titleCache.length; i++) {
+      var hopperH = (0, _jquery2['default'])('.hopper').height();
+      var threshold = (0, _jquery2['default'])('.app').height();
+
+      if (hopperH < threshold) {
+        (0, _jquery2['default'])('.hopper').append(titleCache[i] + publishCache[i]);
+        console.log(hopperH);
+      }
     }
-  });
-};
+  }
 
-endHandler();
+  function endHandler() {
+    (0, _jquery2['default'])('.app').bind('scroll', function () {
+      if ((0, _jquery2['default'])(this).scrollTop() + (0, _jquery2['default'])(this).innerHeight() >= (0, _jquery2['default'])('.hopper')[0].scrollHeight) {
+        for (var i = 3; i < 100; i++) {
+          (0, _jquery2['default'])('.hopper').append(titleCache[i] + publishCache[i]);
+        }
+      }
+    });
+  }
+  scrollHandler();
+  endHandler();
+});
 
 },{"jquery":2}],2:[function(require,module,exports){
 /*!
