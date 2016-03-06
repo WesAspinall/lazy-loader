@@ -7,42 +7,42 @@ var _jquery = require('jquery');
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
-var url = 'http://www.stellarbiotechnologies.com/media/press-releases/json';
 //AJAX Call
+var url = 'http://www.stellarbiotechnologies.com/media/press-releases/json';
 var promise = _jquery2['default'].getJSON(url);
 
+//returns a promise
 promise.then(function (data) {
   var news = data.news;
 
-  for (var i = 0; i < 5; i++) {
+  //cache results
+  var titleCache = [];
+  var publishCache = [];
+
+  for (var i = 0; i < news.length; i++) {
+
+    //declare templates
     var titleTemplate = "<h3>" + news[i].title + "</h3>";
     var publishedTemplate = "<li>" + "published: " + news[i].published + "</li>";
-    (0, _jquery2['default'])('.lazy').append(titleTemplate);
-    (0, _jquery2['default'])('.lazy').append(publishedTemplate);
+
+    //push templates to cache
+    titleCache.push(titleTemplate);
+    publishCache.push(publishedTemplate);
   }
+  //insert initial HTML content
+  (0, _jquery2['default'])('.app').append(titleCache);
+  (0, _jquery2['default'])('.app').append(publishCache);
 });
 
-// scroll detection
-(0, _jquery2['default'])('.lazy').scroll(function () {
+function endHandler() {
+  (0, _jquery2['default'])('.app').bind('scroll', function () {
+    if ((0, _jquery2['default'])(this).scrollTop() + (0, _jquery2['default'])(this).innerHeight() >= (0, _jquery2['default'])(this)[0].scrollHeight) {
+      console.log('end reached');
+    }
+  });
+};
 
-  var wintop = (0, _jquery2['default'])('.lazy').scrollTop(),
-      docheight = (0, _jquery2['default'])(document).height(),
-      winheight = (0, _jquery2['default'])('.lazy').height();
-  var scrolltrigger = 0.95;
-
-  console.log('wintop=' + wintop);
-  console.log('docheight=' + docheight);
-  console.log('winheight=' + winheight);
-  console.log(wintop + '==' + (docheight - winheight));
-  console.log(wintop == docheight - winheight);
-  console.log('%scrolled=' + wintop / (docheight - winheight) * 100);
-
-  if (wintop / (docheight - winheight) > scrolltrigger) {
-    console.log('scroll bottom');
-  }
-});
-
-console.log(2904 / 100);
+endHandler();
 
 },{"jquery":2}],2:[function(require,module,exports){
 /*!

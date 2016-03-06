@@ -1,39 +1,44 @@
 import $ from 'jquery';
 
 
-let url = 'http://www.stellarbiotechnologies.com/media/press-releases/json';
 //AJAX Call
+let url = 'http://www.stellarbiotechnologies.com/media/press-releases/json';
 let promise = $.getJSON(url);
 
 
+//returns a promise
 promise.then((data)=> {
   let news = data.news;
+ 
 
-  for(let i = 0; i < 5; i++){
+//cache results
+let titleCache = [];
+let publishCache = [];
+  
+  for(let i = 0; i<news.length; i++){
+
+    //declare templates
     let titleTemplate = "<h3>" + news[i].title + "</h3>";
     let publishedTemplate = "<li>" +"published: "+news[i].published+ "</li>";
-    $('.lazy').append(titleTemplate)
-    $('.lazy').append(publishedTemplate)
-  }  
+
+    //push templates to cache
+    titleCache.push(titleTemplate);
+    publishCache.push(publishedTemplate); 
+  } 
+  //insert initial HTML content
+  $('.app').append(titleCache);
+  $('.app').append(publishCache);
+
 });
 
-// scroll detection
-$('.lazy').scroll(function(){
+function endHandler(){
+  $('.app').bind('scroll', function(){
+    if($(this).scrollTop()+$(this).innerHeight() >= $(this)[0].scrollHeight){
+      console.log('end reached');
 
-    let wintop = $('.lazy').scrollTop(), docheight = $(document).height(), winheight = $('.lazy').height();
-    let  scrolltrigger = 0.95;
-
-    console.log('wintop='+wintop);
-    console.log('docheight='+docheight);
-    console.log('winheight='+winheight);
-    console.log(wintop+'=='+(docheight-winheight));
-    console.log(wintop==(docheight-winheight));
-    console.log('%scrolled='+(wintop/(docheight-winheight))*100);
-
-    if  ((wintop/(docheight-winheight)) > scrolltrigger) {
-       console.log('scroll bottom');
-  
     }
-});
+  })
+};
 
-console.log(2904/100);
+endHandler(); 
+

@@ -5,9 +5,9 @@ body {
   background: #e2ebf3;
 }
 
-.lazy{
-  overflow: scroll;
+.app{
+  overflow: auto;
   width: 500px;
-  height: 500px;
+  height: 200px;
   border: 1px solid black;
 }
