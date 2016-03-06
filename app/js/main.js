@@ -24,38 +24,48 @@ promise.then(function (data) {
 
     //declare templates
     var titleTemplate = "<h3>" + news[i].title + "</h3>";
-    var publishedTemplate = "<li>" + "published: " + news[i].published + "</li>";
+    var publishedTemplate = "<li>" + "published: " + news[i].published + "</li>" + "<hr>";
 
     //push templates to cache
     titleCache.push(titleTemplate);
     publishCache.push(publishedTemplate);
   }
 
-  console.log(titleCache.length);
+  //...This function caches and outputs data until
+  //...the threshold is reached
+  function initialDataHandler() {
+    var newCache = [];
 
-  function scrollHandler() {
     for (var i = 0; i < titleCache.length; i++) {
       var hopperH = (0, _jquery2['default'])('.hopper').height();
       var threshold = (0, _jquery2['default'])('.app').height();
 
       if (hopperH < threshold) {
         (0, _jquery2['default'])('.hopper').append(titleCache[i] + publishCache[i]);
-        console.log(hopperH);
+        newCache.push(i);
       }
     }
+
+    //...caches and loads when scrolling
+    //...until titleCache and publishCache are done iterating
+    function feed() {
+      (0, _jquery2['default'])('.app').bind('scroll', function () {
+        if ((0, _jquery2['default'])(this).scrollTop() + (0, _jquery2['default'])(this).height() >= (0, _jquery2['default'])('.hopper')[0].scrollHeight) {
+          console.log(newCache);
+          var _length = newCache.length;
+
+          for (var i = _length; i < _length + 1; i++) {
+            (0, _jquery2['default'])('.hopper').append(titleCache[i] + publishCache[i]);
+            newCache.push(i);
+            console.log(_length);
+          }
+        }
+      });
+    }
+    feed();
   }
 
-  function endHandler() {
-    (0, _jquery2['default'])('.app').bind('scroll', function () {
-      if ((0, _jquery2['default'])(this).scrollTop() + (0, _jquery2['default'])(this).innerHeight() >= (0, _jquery2['default'])('.hopper')[0].scrollHeight) {
-        for (var i = 3; i < 100; i++) {
-          (0, _jquery2['default'])('.hopper').append(titleCache[i] + publishCache[i]);
-        }
-      }
-    });
-  }
-  scrollHandler();
-  endHandler();
+  initialDataHandler();
 });
 
 },{"jquery":2}],2:[function(require,module,exports){

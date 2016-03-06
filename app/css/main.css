@@ -1,14 +1,27 @@
 body {
-  background: #e2ebf3; }
+  font-family: 'Courier';
+  text-align: center; }
+
+.title {
+  text-align: center;
+  font-size: 2em;
+  text-shadow: 2px 2px 2px grey; }
 
 .app {
   overflow: auto;
   width: 500px;
   height: 200px;
-  border: 1px solid black; }
+  margin: 1% auto;
+  padding: 1%;
+  border: 1px solid black;
+  border-radius: 5px; }
 
 .hopper {
   width: 100%;
-  border: 2px solid blue; }
+  text-align: center; }
+  .hopper li {
+    list-style-type: none;
+    text-decoration: italic;
+    font-style: italic; }
 
 /*# sourceMappingURL=main.css.map */

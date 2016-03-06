@@ -20,7 +20,7 @@ let publishCache = [];
 
     //declare templates
     let titleTemplate = "<h3>" + news[i].title + "</h3>";
-    let publishedTemplate = "<li>" +"published: "+news[i].published+ "</li>";
+    let publishedTemplate = "<li>" +"published: "+news[i].published+ "</li>"+"<hr>";
 
     //push templates to cache
     titleCache.push(titleTemplate);
@@ -28,32 +28,41 @@ let publishCache = [];
   } 
 
 
-  console.log(titleCache.length);
+  //...This function caches and outputs data until
+  //...the threshold is reached
+  function initialDataHandler (){ 
+    let newCache =[];
 
-  function scrollHandler (){ 
     for(let i = 0; i<titleCache.length; i++){
       let hopperH = $('.hopper').height();
       let threshold = $('.app').height();
 
       if(hopperH < threshold){
         $('.hopper').append(titleCache[i]+publishCache[i]);
-        console.log(hopperH);
+        newCache.push(i);
       }
-    }
-  }
+   }
 
-  function endHandler(){
+   //...caches and loads when scrolling
+   //...until titleCache and publishCache are done iterating
+    function feed(){
       $('.app').bind('scroll', function(){
-      if($(this).scrollTop()+$(this).innerHeight() >= $('.hopper')[0].scrollHeight){
-        for(let i = 3; i<100; i++){
+      if($(this).scrollTop()+$(this).height() >= $('.hopper')[0].scrollHeight){
+        console.log(newCache);
+         let length = newCache.length;
+
+        for(let i = length; i<length+1; i++){
           $('.hopper').append(titleCache[i]+publishCache[i]);
+          newCache.push(i);
+          console.log(length);
         }
       }
     })
   }
-  scrollHandler();
-  endHandler();
-
+  feed();
+}
+  
+  initialDataHandler();
 });
 
 
